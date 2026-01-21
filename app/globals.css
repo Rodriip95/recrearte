@@ -1,26 +1,24 @@
 @import "tailwindcss";
 
+
+/* Variables que mapearán las variables que expone next/font (usando la opción `variable`) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  @theme {
+    /* Define Tailwind utility classes that reference your CSS variables */
+    --font-main: var(--font-libre);
+    --font-serif: var(--font-playfair); 
+    /* Example of mapping to a different utility */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background-primary: #6A9B6A;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
