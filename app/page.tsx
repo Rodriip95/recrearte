@@ -12,6 +12,7 @@ import Header from "./sections/Header";
 import Hero from "./sections/Hero";
 import Services from "./sections/Services";
 import About from "./sections/About";
+import Gallery from "./sections/Gallery";
 
 export default function BotanicalLanding() {
 
@@ -29,50 +30,7 @@ export default function BotanicalLanding() {
       <Services />
       <About />
 
-      {/* Gallery Section */}
-      <section id="coleccion" className="py-24 px-4 bg-stone-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-emerald-700 text-sm tracking-[0.3em] mb-3 uppercase">
-              Colección
-            </p>
-            <h2 className="font-serif text-4xl md:text-5xl text-stone-900">
-              Piezas que cuentan historias
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:row-span-2 bg-stone-200 rounded-lg overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1487070183336-b863922373d4?w=600&q=80"
-                alt="Arreglo floral grande"
-                className="w-full h-full object-cover hover:scale-105 transition duration-700"
-              />
-            </div>
-            <div className="md:col-span-2 bg-stone-200 rounded-lg overflow-hidden shadow-lg h-80">
-              <img
-                src="https://images.unsplash.com/photo-1502977249166-824b3a8a4d6d?w=800&q=80"
-                alt="Cúpula de cristal"
-                className="w-full h-full object-cover hover:scale-105 transition duration-700"
-              />
-            </div>
-            <div className="bg-stone-200 rounded-lg overflow-hidden shadow-lg h-80">
-              <img
-                src="https://images.unsplash.com/photo-1477554193778-9562c28588c0?w=400&q=80"
-                alt="Rama preservada"
-                className="w-full h-full object-cover hover:scale-105 transition duration-700"
-              />
-            </div>
-            <div className="bg-stone-200 rounded-lg overflow-hidden shadow-lg h-80">
-              <img
-                src="https://images.unsplash.com/photo-1464347744102-11db6282f854?w=400&q=80"
-                alt="Celebración natural"
-                className="w-full h-full object-cover hover:scale-105 transition duration-700"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <Gallery/>
 
       {/* Values Section */}
       <section className="py-24 px-4 bg-white">
