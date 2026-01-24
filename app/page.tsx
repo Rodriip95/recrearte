@@ -11,6 +11,7 @@ import {
 import Header from "./sections/Header";
 import Hero from "./sections/Hero";
 import Services from "./sections/Services";
+import About from "./sections/About";
 
 export default function BotanicalLanding() {
 
@@ -26,6 +27,7 @@ export default function BotanicalLanding() {
       <Header />
       <Hero />
       <Services />
+      <About />
 
       {/* Gallery Section */}
       <section id="coleccion" className="py-24 px-4 bg-stone-50">

@@ -53,10 +53,6 @@ const Header = () => {
             </a>
           </nav>
 
-          <button className="hidden md:block px-6 py-2 bg-emerald-700 text-white text-sm tracking-wide hover:bg-emerald-800 transition">
-            AGENDAR CITA
-          </button>
-
           {/* Mobile Menu Button */}
           <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden">
             {menuOpen ? (

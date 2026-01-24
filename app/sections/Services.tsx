@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Services = () => {
   return (
-    <section id="proceso" className="py-24 px-4 bg-white">
+    <section id="proceso" className="py-24 bg-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-emerald-700 text-sm tracking-[0.3em] mb-3 uppercase">
