@@ -1,49 +1,32 @@
 import Image from "next/image";
+import { SITE_CONTENT } from "../constants/content";
+import SectionHeading from "../components/ui/SectionHeading";
+import FloralDecoration from "../components/ui/FloralDecoration";
+import Reveal from "../components/ui/Reveal";
+import DecorativeAsset from "../components/ui/DecorativeAsset";
 
-const About = () => {
+export default function About() {
+  const content = SITE_CONTENT.about;
+  //const styleLogo = { position: "absolute", z-index: 2, right: -28, top: 12%, width: "clamp(105px, 14vw, 180px)", height: "auto", pointerEvents: "none", animation: "gentle-float 6s ease-in-out infinite" };
   return (
-    <section id="about" className="about-section px-4">
-      <div className="md:max-w-3xl lg:max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-emerald-700 text-sm tracking-[0.3em] mb-3 uppercase">
-            Conócenos
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl text-stone-900 mb-4">
-            Sobre Nosotros
-          </h2>
-          <br />
-          <div className="border border-stone-200 overflow-hidden rounded-lg shadow-lg bg-white grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <Image
-                src="/hero.png"
-                alt="About Flowers"
-                width={800}
-                height={600}
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            <div className="p-6 md:p-10">
-              <p className="text-stone-400 text-md md:text-lg max-w-4xl mx-auto leading-relaxed font-main">
-                Soy Flor, florista de corazón y creadora de decoraciones
-                florales desde hace más de 6 años. Mi camino en este mundo
-                empezó con una pasión simple: transformar momentos importantes
-                en recuerdos llenos de color, aroma y emoción. Además de
-                emprendedora, soy mamá, y este trabajo me regaló algo
-                invaluable: la posibilidad de crecer profesionalmente sin dejar
-                de estar presente en lo más importante de mi vida. Ser florista
-                me permite crear, organizar mis tiempos y poner amor en cada
-                detalle, tanto en mi familia como en cada evento que acompaño.
-                Cada arreglo, cada centro de mesa y cada ambientación está
-                pensada con dedicación, sensibilidad y compromiso. Creo
-                profundamente que las flores hablan, y mi trabajo es ayudarlas a
-                contar historias únicas, auténticas y llenas de vida.
-              </p>
-            </div>
+    <section id="sobre-flora" className="section about">
+      <div className="container about-grid">
+        <Reveal className="about-visual">
+          <div className="about-image"><Image src="/images/61c340ba-42f9-4c02-b9a1-134415de547c.JPG" alt="Composición floral celeste creada por Flora" fill sizes="(max-width: 768px) 92vw, 40vw" /></div>
+          <div className="absolute z-10 right-4 bottom-4 bg-amber-100 rounded-full p-4 w-24 h-24 flex items-center justify-center shadow-lg -rotate-20">
+          <Image src="/assets/Lg.svg" alt="" aria-hidden="true" width={80} height={80} />
           </div>
-        </div>
+        </Reveal>
+        <Reveal className="about-content" delay={100}>
+          <SectionHeading eyebrow={content.eyebrow} title={content.title} />
+          <p className="about-intro">{content.intro}</p>
+          <div className="about-paragraphs">{content.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+          <blockquote>{content.highlight}</blockquote>
+          <p className="signature">{content.signature}</p>
+        </Reveal>
       </div>
+      <FloralDecoration className="about-botanical" />
+      <DecorativeAsset src="/assets/Vector-1.svg" className="asset-about" delay={600} />
     </section>
   );
-};
-
-export default About;
+}

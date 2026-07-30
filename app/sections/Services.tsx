@@ -1,59 +1,34 @@
-import Image from "next/image";
+import { Flower2, Gift, PartyPopper, Sprout, WandSparkles } from "lucide-react";
+import { SITE_CONTENT } from "../constants/content";
+import SectionHeading from "../components/ui/SectionHeading";
+import ButtonLink from "../components/ui/ButtonLink";
+import Reveal from "../components/ui/Reveal";
+import DecorativeAsset from "../components/ui/DecorativeAsset";
 
-const Services = () => {
+const icons = [Flower2, Gift, PartyPopper, Sprout, WandSparkles];
+
+export default function Services() {
+  const content = SITE_CONTENT.services;
   return (
-    <section id="proceso" className="py-24 bg-white">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-emerald-700 text-sm tracking-[0.3em] mb-3 uppercase">
-            Flores & Mariposas
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl text-stone-900 mb-4">
-            Detalles que enamoran
-          </h2>
-          <br />
-          <p className="text-stone-400 text-md md:text-lg max-w-4xl mx-auto leading-relaxed font-main">
-            Estas son algunas de nuestras creaciones, totalmente personalizadas
-            al gusto de cada cliente. Cada pieza es única, creada con dedicación
-            y pasión para capturar la esencia de la naturaleza en su forma más
-            hermosa.
-          </p>
+    <section id="servicios" className="section services">
+      <DecorativeAsset src="/assets/Vector-3.svg" className="asset-services" />
+      <div className="container">
+        <Reveal><SectionHeading eyebrow={content.eyebrow} title={content.title} description={content.intro} align="center" /></Reveal>
+        <div className="services-grid">
+          {content.items.map((service, index) => {
+            const Icon = icons[index];
+            return (
+              <Reveal key={service.title} className={`service-card service-card--${index + 1}`} delay={index * 60}>
+                <div className="service-number">0{index + 1}</div>
+                <Icon aria-hidden="true" />
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </Reveal>
+            );
+          })}
         </div>
-
-        <div className="grid md:grid-cols-3 gap-1 items-center">
-          <div className="overflow-hidden">
-            <Image
-              src="/services2.png"
-              alt="Cupula de mariposas"
-              width={1920 / 4}
-              height={1080 / 4}
-              className="w-full h-full object-cover hover:scale-105 transition duration-500"
-              priority
-            />
-          </div>
-          <div className="overflow-hidden">
-            <Image
-              src="/services1.png"
-              alt="Cupula de mariposas"
-              width={1920 / 4}
-              height={1080 / 4}
-              className="w-full h-full object-cover hover:scale-105 transition duration-500"
-              priority
-            />
-          </div>
-          <div className="overflow-hidden">
-            <Image
-              src="/services3.png"
-              alt="Cupula de mariposas"
-              width={1920 / 4}
-              height={1080 / 4}
-              className="w-full h-full object-cover hover:scale-105 transition duration-500"
-              priority
-            />
-          </div>
-        </div>
+        <div className="centered-cta"><ButtonLink href="#contacto">{content.cta}</ButtonLink></div>
       </div>
     </section>
   );
-};
-export default Services;
+}
