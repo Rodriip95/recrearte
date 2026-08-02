@@ -52,7 +52,7 @@ export default function Hero() {
           </div>
           <div className="hero-image hero-image--secondary"><Image src="/images/007bd6cd-e92d-4458-91a3-e5ba32d81040.JPG" alt="Centro de mesa floral en tonos rosa" fill sizes="(max-width: 768px) 38vw, 14vw" /></div>
           <div className="hero-image hero-image--small"><Image src="/images/42a989c6-772a-4ddc-825b-12ec8501f136.JPG" alt="Cúpulas con mariposas creadas por Flora" fill sizes="(max-width: 768px) 32vw, 11vw" /></div>
-          <span className="hero-note">hecho con sensibilidad</span>
+          <span className="hero-note z-50">hecho con sensibilidad</span>
         </Reveal>
       </div>
     </section>
