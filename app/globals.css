@@ -214,6 +214,7 @@ h2 { color: var(--olive-900); font-size: clamp(2.45rem, 5vw, 4.8rem); line-heigh
   .mobile-gallery-arrow--previous { left: 12px; }.mobile-gallery-arrow--next { right: 12px; }
   .mobile-gallery-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 17px; color: rgba(255,255,255,.7); font-size: .68rem; }
   .mobile-gallery-category-name { max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+  .mobile-gallery-empty { margin: 0; padding: 56px 18px; border: 1px solid rgba(255,255,255,.16); border-radius: 24px; color: rgba(255,255,255,.72); text-align: center; }
   .contact-grid { grid-template-columns: 1fr; }.field-row { grid-template-columns: 1fr; gap: 0; }
   .footer-grid { grid-template-columns: 1fr; gap: 38px; }.footer-bottom { flex-direction: column; }.closing-decoration { transform: scale(1.5) rotate(-20deg); }
 }

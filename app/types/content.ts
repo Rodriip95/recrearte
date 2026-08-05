@@ -2,9 +2,9 @@ export type GalleryCategory =
   | "Todos"
   | "Centros de mesa"
   | "Souvenirs"
-  | "Comuniones y bautismos"
-  | "Quince años"
-  | "Eventos especiales";
+  | "Velas y pergaminos"
+  | "Arreglos florales y ramos"
+  | "Cuadros de firmas";
 
 export interface GalleryItem {
   id: string;
