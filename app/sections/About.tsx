@@ -10,16 +10,24 @@ export default function About() {
   return (
     <section id="sobre-flora" className="section about">
       <div className="container about-grid">
+        <Reveal className="about-heading" delay={100}>
+          <SectionHeading eyebrow={content.eyebrow} title={content.title} />
+        </Reveal>
         <Reveal className="about-visual">
-          <div className="about-image">
-            <Image src="/images/FR-Ramo para regalos.JPG" alt="Ramo floral armado para regalar, creación de Flora Eventos Florales" fill sizes="(max-width: 768px) 92vw, 40vw" />
+          <div className="about-image about-image--main border-8 border-amber-50">
+            <Image src="/images/about1.JPG" alt="Creación floral de Flora Eventos Florales" fill sizes="(max-width: 720px) 68vw, 31vw" />
           </div>
-          <div className="about-seal" aria-hidden="true">
+          <div className="about-image about-image--left absolute z-10">
+            <Image src="/images/about2.JPG" alt="Detalle del trabajo artesanal de Flora Eventos Florales" fill sizes="(max-width: 720px) 31vw, 14vw" />
+          </div>
+          <div className="about-image about-image--right absolute z-10">
+            <Image src="/images/about3.JPG" alt="Ambientación creada por Flora Eventos Florales" fill sizes="(max-width: 720px) 29vw, 13vw" />
+          </div>
+          <div className="about-seal z-30" aria-hidden="true">
             <Image src="/assets/Lg.svg" alt="" width={84} height={84} />
           </div>
         </Reveal>
         <Reveal className="about-content" delay={100}>
-          <SectionHeading eyebrow={content.eyebrow} title={content.title} />
           <p className="about-intro">{content.intro}</p>
           <div className="about-narrative">
             {content.chapters.map((chapter, index) => (

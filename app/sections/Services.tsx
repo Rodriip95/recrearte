@@ -19,9 +19,10 @@ export default function Services() {
             const Icon = icons[index];
             return (
               <Reveal key={service.title} className={`service-card service-card--${index + 1}`} delay={index * 60}>
-                <div className="service-number">0{index + 1}</div>
-                <Icon aria-hidden="true" />
-                <h3>{service.title}</h3>
+                <div className="service-card-heading flex flex-row items-center justify-between gap-2">
+                  <h3>{service.title}</h3>
+                  <Icon aria-hidden="true" />
+                </div>
                 <p>{service.description}</p>
               </Reveal>
             );
