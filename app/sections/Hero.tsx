@@ -15,8 +15,8 @@ export default function Hero() {
       <div className="container hero-grid">
         <Reveal className="hero-copy">
           <p className="eyebrow">{content.eyebrow}</p>
-          <h1 className="font-display">{content.title}</h1>
-          <p className="hero-subtitle font-secondary font-bold">{content.subtitle}</p>
+          <h1>{content.title}</h1>
+          <p className="hero-subtitle">{content.subtitle}</p>
           <p className="hero-description">{content.description}</p>
           <div className="button-row">
             <ButtonLink href="#contacto">{content.primaryCta}</ButtonLink>
@@ -27,16 +27,16 @@ export default function Hero() {
           <div className="hero-image hero-image--main">
             {[
               {
-                src: "/images/5130ca3e-8853-4b81-b1d9-499dd624fa29.JPG",
-                alt: "Ambientación floral en blanco para una celebración especial",
+                src: "/images/FR-Bouquet floral.JPG",
+                alt: "Ramo floral creado por Flora para una celebración",
               },
               {
-                src: "/images/61c340ba-42f9-4c02-b9a1-134415de547c.JPG",
-                alt: "Centro de mesa floral en tonos celestes",
+                src: "/images/CM-Farol premium.jpg",
+                alt: "Farol floral premium con detalles en tonos cálidos",
               },
               {
-                src: "/images/f6558e46-890e-42d8-9e9c-c431a53cb7fb.JPG",
-                alt: "Centro de mesa floral en tonos rosa",
+                src: "/images/CM-Faroles clasicos.jpg",
+                alt: "Faroles clásicos con arreglo floral",
               },
             ].map((image, index) => (
               <span className="hero-image-slide" key={image.src}>
@@ -50,9 +50,9 @@ export default function Hero() {
               </span>
             ))}
           </div>
-          <div className="hero-image hero-image--secondary"><Image src="/images/007bd6cd-e92d-4458-91a3-e5ba32d81040.JPG" alt="Centro de mesa floral en tonos rosa" fill sizes="(max-width: 768px) 38vw, 14vw" /></div>
-          <div className="hero-image hero-image--small"><Image src="/images/42a989c6-772a-4ddc-825b-12ec8501f136.JPG" alt="Cúpulas con mariposas creadas por Flora" fill sizes="(max-width: 768px) 32vw, 11vw" /></div>
-          <span className="hero-note z-50">hecho con sensibilidad</span>
+          <div className="hero-image hero-image--secondary"><Image src="/images/CM-Argolla floral vela.JPG" alt="Centro de mesa floral con vela" fill sizes="(max-width: 768px) 38vw, 14vw" /></div>
+          <div className="hero-image hero-image--small"><Image src="/images/CM-Bosque de mariposas.jpg" alt="Cúpula con mariposas creada por Flora" fill sizes="(max-width: 768px) 32vw, 11vw" /></div>
+          <span className="hero-note">hecho con sensibilidad</span>
         </Reveal>
       </div>
     </section>

@@ -12,5 +12,7 @@ export interface GalleryItem {
   alt: string;
   category: Exclude<GalleryCategory, "Todos">;
   title: string;
+  width: number;
+  height: number;
   size: "tall" | "wide" | "standard";
 }

@@ -7,8 +7,8 @@ import SectionHeading from "../components/ui/SectionHeading";
 import Reveal from "../components/ui/Reveal";
 import DecorativeAsset from "../components/ui/DecorativeAsset";
 
-type FormFields = { name: string; phone: string; email: string; eventType: string; eventDate: string; message: string };
-const initialForm: FormFields = { name: "", phone: "", email: "", eventType: "", eventDate: "", message: "" };
+type FormFields = { name: string; phone: string; email: string; eventType: string; eventDate: string; interest: string; message: string };
+const initialForm: FormFields = { name: "", phone: "", email: "", eventType: "", eventDate: "", interest: "", message: "" };
 
 export default function Contact() {
   const content = SITE_CONTENT.contact;
@@ -24,6 +24,7 @@ export default function Contact() {
     if (!form.email.trim() || !/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = "Ingresá un email válido.";
     if (!form.eventType) nextErrors.eventType = "Elegí un tipo de evento.";
     if (!form.eventDate) nextErrors.eventDate = "Elegí la fecha del evento.";
+    if (!form.interest) nextErrors.interest = "Elegí qué te interesa.";
     if (form.message.trim().length < 10) nextErrors.message = "Contanos un poco más sobre tu idea.";
     setErrors(nextErrors);
     setSubmitted(Object.keys(nextErrors).length === 0);
@@ -44,11 +45,18 @@ export default function Contact() {
           <SectionHeading eyebrow={content.eyebrow} title={content.title} description={content.description} />
           <div className="direct-contact">
             <h3>{content.directContact.title}</h3>
+            <p className="direct-contact-copy">{content.directContact.channelsNote}</p>
             <div className="direct-links">
-              <a href={SOCIAL_LINKS.whatsapp || undefined} aria-disabled={!SOCIAL_LINKS.whatsapp}><MessageCircle />{content.directContact.whatsapp}</a>
-              <a href={SOCIAL_LINKS.instagram || undefined} aria-disabled={!SOCIAL_LINKS.instagram}><Instagram />{content.directContact.instagram}</a>
+              {SOCIAL_LINKS.whatsapp && (
+                <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="direct-channel direct-channel--whatsapp">
+                  <MessageCircle />{content.directContact.whatsapp}<small>{content.directContact.whatsappPhone}</small>
+                </a>
+              )}
+              {!SOCIAL_LINKS.instagram && (
+                <span className="direct-channel" aria-disabled="true"><Instagram />{content.directContact.instagram}<small>Pronto</small></span>
+              )}
             </div>
-            {!SOCIAL_LINKS.whatsapp && <small>Los enlaces directos se habilitarán próximamente.</small>}
+            <small className="direct-note">{content.directContact.response}</small>
           </div>
         </Reveal>
         <Reveal delay={100}>
@@ -63,19 +71,27 @@ export default function Contact() {
                 <label htmlFor="eventType">{content.form.eventType}</label>
                 <select id="eventType" value={form.eventType} onChange={(e) => update("eventType", e.target.value)} aria-invalid={!!errors.eventType}>
                   <option value="">Seleccioná una opción</option>
-                  <option>Comunión o bautismo</option><option>Quince años</option><option>Cumpleaños</option><option>Evento especial</option><option>Otro</option>
+                  <option>Casamiento</option><option>Comunión o bautismo</option><option>Quince años</option><option>Cumpleaños</option><option>Evento especial</option><option>Otro</option>
                 </select>
                 {errors.eventType && <span className="field-error">{errors.eventType}</span>}
               </div>
               <Field label={content.form.eventDate} id="eventDate" type="date" value={form.eventDate} error={errors.eventDate} onChange={(v) => update("eventDate", v)} />
             </div>
             <div className="field">
+              <label htmlFor="interest">{content.form.interest}</label>
+              <select id="interest" value={form.interest} onChange={(e) => update("interest", e.target.value)} aria-invalid={!!errors.interest}>
+                <option value="">Seleccioná una opción</option>
+                <option>Centros de mesa</option><option>Souvenirs</option><option>Velas y pergaminos</option><option>Arreglos florales y ramos</option><option>Cuadros de firmas</option><option>Decoración para eventos</option><option>Diseño personalizado</option><option>Aún no lo sé</option>
+              </select>
+              {errors.interest && <span className="field-error">{errors.interest}</span>}
+            </div>
+            <div className="field">
               <label htmlFor="message">{content.form.message}</label>
               <textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} aria-invalid={!!errors.message} />
               {errors.message && <span className="field-error">{errors.message}</span>}
             </div>
-            <button className="button button--primary form-submit" type="submit">{content.form.submit}<span>→</span></button>
-            {submitted && <p className="form-success" role="status">¡Gracias! Tu consulta está lista. Próximamente conectaremos este formulario para enviarla.</p>}
+            <button className="button button--primary form-submit" type="submit">{content.form.submit}<span aria-hidden="true">→</span></button>
+            {submitted && <p className="form-success" role="status">¡Gracias{form.name ? `, ${form.name}` : ""}! Tomé nota de tu consulta y te escribo a la brevedad para crear juntos tu propuesta.</p>}
           </form>
         </Reveal>
       </div>

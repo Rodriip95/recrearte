@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { NAVIGATION } from "../../constants/content";
 import ButtonLink from "../ui/ButtonLink";
 
@@ -20,21 +21,36 @@ export default function Header() {
   return (
     <header className={`site-header ${scrolled || menuOpen ? "is-scrolled" : ""}`}>
       <div className="container header-inner">
-        <a href="#inicio" className="brand" aria-label="Flora Eventos Florales, ir al inicio">
+        <Link href="/#inicio" className="brand" aria-label="Flora Eventos Florales, ir al inicio">
           <Image src="/assets/Logo.svg" alt="Flora Eventos Florales" width={150} height={64} priority />
-        </a>
+        </Link>
         <nav className="desktop-nav" aria-label="Navegación principal">
-          {NAVIGATION.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+          {NAVIGATION.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
-        <ButtonLink href="#contacto" className="header-cta">Quiero crear mi evento</ButtonLink>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} aria-controls="mobile-menu">
+        <ButtonLink href="/#contacto" className="header-cta button--sm">Quiero crear mi evento</ButtonLink>
+        <button
+          className="menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+        >
           {menuOpen ? <X /> : <Menu />}
         </button>
       </div>
       <div id="mobile-menu" className={`mobile-menu ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
         <nav aria-label="Navegación móvil">
-          {NAVIGATION.map((item, index) => <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{item.label}</a>)}
-          <ButtonLink href="#contacto">Quiero crear mi evento</ButtonLink>
+          {NAVIGATION.map((item, index) => (
+            <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+              <span>0{index + 1}</span>
+              {item.label}
+            </Link>
+          ))}
+          <ButtonLink href="/#contacto">Quiero crear mi evento</ButtonLink>
         </nav>
       </div>
     </header>

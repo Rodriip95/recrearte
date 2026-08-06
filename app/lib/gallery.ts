@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import type { GalleryItem } from "../types/content";
 
@@ -25,10 +25,14 @@ const SIZE_PATTERN: GalleryItem["size"][] = [
 const WORD_REPLACEMENTS: Record<string, string> = {
   clasica: "clásica",
   clasicas: "clásicas",
+  clasico: "clásico",
+  clasicos: "clásicos",
   copon: "copón",
   cupula: "cúpula",
   cupulas: "cúpulas",
   lamparas: "lámparas",
+  platiadas: "plateadas",
+  varrillas: "varillas",
 };
 
 export function getGalleryItems(): GalleryItem[] {
@@ -49,6 +53,7 @@ export function getGalleryItems(): GalleryItem[] {
 
       return {
         ...item,
+        ...getImageDimensions(path.join(imagesDirectory, file)),
         size: SIZE_PATTERN[categoryIndex % SIZE_PATTERN.length],
       };
     })
@@ -71,12 +76,94 @@ function parseGalleryFile(file: string): Omit<GalleryItem, "size"> | null {
     alt: `${title}, diseño de Flora Eventos Florales`,
     category,
     title,
+    width: 1200,
+    height: 1500,
   };
+}
+
+function getImageDimensions(filePath: string) {
+  const buffer = readFileSync(filePath);
+  const extension = path.extname(filePath).toLowerCase();
+
+  if (extension === ".png" && buffer.toString("ascii", 1, 4) === "PNG") {
+    return {
+      width: buffer.readUInt32BE(16),
+      height: buffer.readUInt32BE(20),
+    };
+  }
+
+  if ((extension === ".jpg" || extension === ".jpeg") && buffer[0] === 0xff && buffer[1] === 0xd8) {
+    const dimensions = getJpegDimensions(buffer);
+    if (dimensions) return dimensions;
+  }
+
+  if (extension === ".webp" && buffer.toString("ascii", 0, 4) === "RIFF") {
+    const dimensions = getWebpDimensions(buffer);
+    if (dimensions) return dimensions;
+  }
+
+  return { width: 1200, height: 1500 };
+}
+
+function getJpegDimensions(buffer: Buffer) {
+  let offset = 2;
+
+  while (offset < buffer.length) {
+    if (buffer[offset] !== 0xff) return null;
+
+    const marker = buffer[offset + 1];
+    const length = buffer.readUInt16BE(offset + 2);
+    const isStartOfFrame =
+      (marker >= 0xc0 && marker <= 0xc3) ||
+      (marker >= 0xc5 && marker <= 0xc7) ||
+      (marker >= 0xc9 && marker <= 0xcb) ||
+      (marker >= 0xcd && marker <= 0xcf);
+
+    if (isStartOfFrame) {
+      return {
+        height: buffer.readUInt16BE(offset + 5),
+        width: buffer.readUInt16BE(offset + 7),
+      };
+    }
+
+    offset += 2 + length;
+  }
+
+  return null;
+}
+
+function getWebpDimensions(buffer: Buffer) {
+  const format = buffer.toString("ascii", 12, 16);
+
+  if (format === "VP8X") {
+    return {
+      width: 1 + buffer.readUIntLE(24, 3),
+      height: 1 + buffer.readUIntLE(27, 3),
+    };
+  }
+
+  if (format === "VP8 ") {
+    return {
+      width: buffer.readUInt16LE(26) & 0x3fff,
+      height: buffer.readUInt16LE(28) & 0x3fff,
+    };
+  }
+
+  if (format === "VP8L") {
+    const bits = buffer.readUInt32LE(21);
+    return {
+      width: (bits & 0x3fff) + 1,
+      height: ((bits >> 14) & 0x3fff) + 1,
+    };
+  }
+
+  return null;
 }
 
 function formatTitle(value: string) {
   const normalized = value
     .replace(/[_-]+/g, " ")
+    .replace(/\s*\(\d+\)\s*/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -92,6 +179,7 @@ function formatWord(word: string, index: number) {
 
   const lower = word.toLowerCase();
   const corrected = WORD_REPLACEMENTS[lower] ?? lower;
+  if (corrected === "cm") return corrected;
 
   if (
     index > 0 &&

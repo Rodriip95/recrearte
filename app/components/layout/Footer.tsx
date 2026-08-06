@@ -1,5 +1,7 @@
-import { NAVIGATION, SITE_CONTENT } from "../../constants/content";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUp } from "lucide-react";
+import { NAVIGATION, SITE_CONTENT } from "../../constants/content";
 
 export default function Footer() {
   const content = SITE_CONTENT.footer;
@@ -13,12 +15,19 @@ export default function Footer() {
         </div>
         <nav aria-label="Navegación del pie">
           <p className="footer-title">Explorá</p>
-          {NAVIGATION.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+          {NAVIGATION.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </div>
       <div className="container footer-bottom">
         <p>© {new Date().getFullYear()} Flora Eventos Florales. Todos los derechos reservados.</p>
-        <a href="#inicio">Volver arriba ↑</a>
+        <Link href="/#inicio" className="back-to-top">
+          <ArrowUp size={14} aria-hidden="true" />
+          Volver arriba
+        </Link>
       </div>
     </footer>
   );
