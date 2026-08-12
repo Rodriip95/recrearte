@@ -93,7 +93,7 @@ export const SITE_CONTENT = {
     description: "Contame qué estás imaginando para tu evento, la fecha, el tipo de celebración y todos los detalles que quieras compartir. A partir de ahí podemos empezar a crear una propuesta pensada especialmente para vos.",
     form: { name: "Nombre", phone: "WhatsApp", email: "Email", eventType: "Tipo de evento", eventDate: "Fecha del evento", interest: "Producto o servicio de interés", message: "Contame un poco sobre tu idea", submit: "Enviar consulta" },
     directContact: { title: "¿Preferís un trato directo?", whatsapp: "WhatsApp", whatsappPhone: "+54 9 11 3817-5039", instagram: "Instagram", channelsNote: "Escribime por WhatsApp o por el formulario y te respondo personalmente con una propuesta pensada para tu evento.", response: "Respuesta personal · Sin compromiso" },
-    closing: "Cada gran celebración empieza con una idea. La tuya puede empezar acá.",
+    closing: "Si sos decoradora de eventos y estás pensando en trabajar con arreglos florales, comunícate conmigo.",
   },
   footer: {
     brand: "Flora Eventos Florales",

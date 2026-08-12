@@ -15,8 +15,10 @@ export default function Contact() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState<Partial<FormFields>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors: Partial<FormFields> = {};
     if (!form.name.trim()) nextErrors.name = "Ingresá tu nombre.";
@@ -27,14 +29,66 @@ export default function Contact() {
     if (!form.interest) nextErrors.interest = "Elegí qué te interesa.";
     if (form.message.trim().length < 10) nextErrors.message = "Contanos un poco más sobre tu idea.";
     setErrors(nextErrors);
-    setSubmitted(Object.keys(nextErrors).length === 0);
-    // Preparado para integrar WhatsApp, Formspree o una API propia.
+    setSubmitted(false);
+    setSubmitError("");
+
+    if (Object.keys(nextErrors).length > 0) return;
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORM;
+    if (!accessKey) {
+      setSubmitError("El formulario no está configurado. Escribinos por WhatsApp.");
+      return;
+    }
+
+    const formElement = event.currentTarget;
+    const botcheck = new FormData(formElement).get("botcheck") ?? "";
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `Nueva consulta para ${form.eventType} · Flora Eventos Florales`,
+          from_name: "Web de Flora Eventos Florales",
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          replyto: form.email.trim(),
+          "Tipo de evento": form.eventType,
+          "Fecha del evento": form.eventDate,
+          "Producto o servicio": form.interest,
+          message: form.message.trim(),
+          botcheck,
+        }),
+      });
+
+      const result = (await response.json()) as { success?: boolean; message?: string };
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "No se pudo enviar la consulta.");
+      }
+
+      setSubmitted(true);
+      setForm(initialForm);
+      formElement.reset();
+    } catch {
+      setSubmitError("No pudimos enviar tu consulta. Intentá nuevamente o escribinos por WhatsApp.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const update = (field: keyof FormFields, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
     setSubmitted(false);
+    setSubmitError("");
   };
 
   return (
@@ -61,6 +115,7 @@ export default function Contact() {
         </Reveal>
         <Reveal delay={100}>
           <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            <input className="form-botcheck" type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <div className="field-row">
               <Field label={content.form.name} id="name" value={form.name} error={errors.name} onChange={(v) => update("name", v)} />
               <Field label={content.form.phone} id="phone" type="tel" value={form.phone} error={errors.phone} onChange={(v) => update("phone", v)} />
@@ -90,8 +145,14 @@ export default function Contact() {
               <textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} aria-invalid={!!errors.message} />
               {errors.message && <span className="field-error">{errors.message}</span>}
             </div>
-            <button className="button button--primary form-submit" type="submit">{content.form.submit}<span aria-hidden="true">→</span></button>
-            {submitted && <p className="form-success" role="status">¡Gracias{form.name ? `, ${form.name}` : ""}! Tomé nota de tu consulta y te escribo a la brevedad para crear juntos tu propuesta.</p>}
+            <button className="button button--primary form-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Enviando…" : content.form.submit}
+              <span aria-hidden="true">→</span>
+            </button>
+            <div aria-live="polite">
+              {submitted && <p className="form-success" role="status">¡Gracias! Recibimos tu consulta y te escribiremos a la brevedad para crear juntos tu propuesta.</p>}
+              {submitError && <p className="form-submit-error" role="alert">{submitError}</p>}
+            </div>
           </form>
         </Reveal>
       </div>

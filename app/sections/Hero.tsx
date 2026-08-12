@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { SITE_CONTENT } from "../constants/content";
 import ButtonLink from "../components/ui/ButtonLink";
-import FloralDecoration from "../components/ui/FloralDecoration";
 import DecorativeAsset from "../components/ui/DecorativeAsset";
 import Reveal from "../components/ui/Reveal";
 
@@ -9,7 +8,7 @@ export default function Hero() {
   const content = SITE_CONTENT.hero;
   return (
     <section id="inicio" className="hero">
-      <FloralDecoration className="hero-botanical" />
+      <DecorativeAsset src="/assets/Vector-5.svg" className="asset-hero-botanical" />
       <DecorativeAsset src="/assets/Vector.svg" className="asset-hero-flower" />
       <DecorativeAsset src="/assets/Vector-2.svg" className="asset-hero-butterfly" delay={900} />
       <div className="container hero-grid">
@@ -51,8 +50,7 @@ export default function Hero() {
             ))}
           </div>
           <div className="hero-image hero-image--secondary"><Image src="/images/CM-Argolla floral vela.JPG" alt="Centro de mesa floral con vela" fill sizes="(max-width: 768px) 38vw, 14vw" /></div>
-          <div className="hero-image hero-image--small"><Image src="/images/CM-Bosque de mariposas.jpg" alt="Cúpula con mariposas creada por Flora" fill sizes="(max-width: 768px) 32vw, 11vw" /></div>
-          <span className="hero-note">hecho con sensibilidad</span>
+          <div className="hero-image hero-image--small"><Image src="/images/CM-Linterna Rapunzel.jpg" alt="Cúpula con mariposas creada por Flora" fill sizes="(max-width: 768px) 32vw, 11vw" /></div>
         </Reveal>
       </div>
     </section>

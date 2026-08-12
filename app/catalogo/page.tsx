@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
@@ -6,10 +7,33 @@ import { SITE_CONTENT } from "../constants/content";
 import { getGalleryItems } from "../lib/gallery";
 import type { GalleryCategory, GalleryItem } from "../types/content";
 
-export const metadata = {
-  title: "Catálogo | Flora Eventos Florales",
+export const metadata: Metadata = {
+  title: "Catálogo de decoración para eventos",
   description:
-    "Catálogo completo de centros de mesa, souvenirs, velas, pergaminos, arreglos florales, ramos y cuadros de firmas de Flora Eventos Florales.",
+    "Explorá el catálogo de Flora: centros de mesa, souvenirs, velas, pergaminos, arreglos florales, ramos y cuadros de firmas personalizados.",
+  alternates: { canonical: "/catalogo" },
+  openGraph: {
+    type: "website",
+    url: "/catalogo",
+    title: "Catálogo de diseños para eventos | Flora Eventos Florales",
+    description:
+      "Centros de mesa, souvenirs, velas, pergaminos, arreglos florales, ramos y cuadros de firmas personalizados.",
+    images: [
+      {
+        url: "/images/CM-Farol premium.jpg",
+        width: 1024,
+        height: 1536,
+        alt: "Centro de mesa floral de Flora Eventos Florales",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Catálogo de diseños para eventos | Flora Eventos Florales",
+    description:
+      "Centros de mesa, souvenirs y decoración floral personalizada para celebraciones.",
+    images: ["/images/CM-Farol premium.jpg"],
+  },
 };
 
 type VisibleCategory = Exclude<GalleryCategory, "Todos">;
