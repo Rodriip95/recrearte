@@ -11,6 +11,7 @@ import DecorativeAsset from "../components/ui/DecorativeAsset";
 type FormFields = { name: string; phone: string; email: string; eventType: string; eventDate: string; interest: string; message: string };
 const initialForm: FormFields = { name: "", phone: "", email: "", eventType: "", eventDate: "", interest: "", message: "" };
 const hcaptchaSiteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
+const isHCaptchaEnabled = process.env.NEXT_PUBLIC_HCAPTCHA_ENABLED === "true";
 
 export default function Contact() {
   const content = SITE_CONTENT.contact;
@@ -32,12 +33,13 @@ export default function Contact() {
     if (!form.eventDate) nextErrors.eventDate = "Elegí la fecha del evento.";
     if (!form.interest) nextErrors.interest = "Elegí qué te interesa.";
     if (form.message.trim().length < 10) nextErrors.message = "Contanos un poco más sobre tu idea.";
-    if (!captchaToken) setSubmitError("Confirmá que no sos un robot para enviar la consulta.");
+    const captchaIsValid = !isHCaptchaEnabled || Boolean(captchaToken);
+    if (!captchaIsValid) setSubmitError("Confirmá que no sos un robot para enviar la consulta.");
     setErrors(nextErrors);
     setSubmitted(false);
-    if (captchaToken) setSubmitError("");
+    if (captchaIsValid) setSubmitError("");
 
-    if (Object.keys(nextErrors).length > 0 || !captchaToken) return;
+    if (Object.keys(nextErrors).length > 0 || !captchaIsValid) return;
 
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORM;
     if (!accessKey) {
@@ -70,7 +72,7 @@ export default function Contact() {
           "Producto o servicio": form.interest,
           message: form.message.trim(),
           botcheck,
-          "h-captcha-response": captchaToken,
+          ...(isHCaptchaEnabled ? { "h-captcha-response": captchaToken } : {}),
         }),
       });
 
@@ -84,7 +86,7 @@ export default function Contact() {
       setForm(initialForm);
       formElement.reset();
       setCaptchaToken("");
-      captchaRef.current?.resetCaptcha();
+      if (isHCaptchaEnabled) captchaRef.current?.resetCaptcha();
     } catch {
       setSubmitError("No pudimos enviar tu consulta. Intentá nuevamente o escribinos por WhatsApp.");
     } finally {
@@ -153,19 +155,21 @@ export default function Contact() {
               <textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} aria-invalid={!!errors.message} />
               {errors.message && <span className="field-error">{errors.message}</span>}
             </div>
-            <div className="form-captcha">
-              <HCaptcha
-                ref={captchaRef}
-                sitekey={hcaptchaSiteKey}
-                reCaptchaCompat={false}
-                onVerify={setCaptchaToken}
-                onExpire={() => setCaptchaToken("")}
-                onError={() => {
-                  setCaptchaToken("");
-                  setSubmitError("No pudimos cargar la validación antispam. Recargá la página o escribinos por WhatsApp.");
-                }}
-              />
-            </div>
+            {isHCaptchaEnabled && (
+              <div className="form-captcha">
+                <HCaptcha
+                  ref={captchaRef}
+                  sitekey={hcaptchaSiteKey}
+                  reCaptchaCompat={false}
+                  onVerify={setCaptchaToken}
+                  onExpire={() => setCaptchaToken("")}
+                  onError={() => {
+                    setCaptchaToken("");
+                    setSubmitError("No pudimos cargar la validación antispam. Recargá la página o escribinos por WhatsApp.");
+                  }}
+                />
+              </div>
+            )}
             <button className="button button--primary form-submit" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Enviando…" : content.form.submit}
               <span aria-hidden="true">→</span>
