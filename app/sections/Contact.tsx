@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { Instagram, MessageCircle } from "lucide-react";
 import { SITE_CONTENT, SOCIAL_LINKS } from "../constants/content";
 import SectionHeading from "../components/ui/SectionHeading";
@@ -9,6 +10,7 @@ import DecorativeAsset from "../components/ui/DecorativeAsset";
 
 type FormFields = { name: string; phone: string; email: string; eventType: string; eventDate: string; interest: string; message: string };
 const initialForm: FormFields = { name: "", phone: "", email: "", eventType: "", eventDate: "", interest: "", message: "" };
+const hcaptchaSiteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
 
 export default function Contact() {
   const content = SITE_CONTENT.contact;
@@ -17,6 +19,8 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<HCaptcha>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,11 +32,12 @@ export default function Contact() {
     if (!form.eventDate) nextErrors.eventDate = "Elegí la fecha del evento.";
     if (!form.interest) nextErrors.interest = "Elegí qué te interesa.";
     if (form.message.trim().length < 10) nextErrors.message = "Contanos un poco más sobre tu idea.";
+    if (!captchaToken) setSubmitError("Confirmá que no sos un robot para enviar la consulta.");
     setErrors(nextErrors);
     setSubmitted(false);
-    setSubmitError("");
+    if (captchaToken) setSubmitError("");
 
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0 || !captchaToken) return;
 
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORM;
     if (!accessKey) {
@@ -65,6 +70,7 @@ export default function Contact() {
           "Producto o servicio": form.interest,
           message: form.message.trim(),
           botcheck,
+          "h-captcha-response": captchaToken,
         }),
       });
 
@@ -77,6 +83,8 @@ export default function Contact() {
       setSubmitted(true);
       setForm(initialForm);
       formElement.reset();
+      setCaptchaToken("");
+      captchaRef.current?.resetCaptcha();
     } catch {
       setSubmitError("No pudimos enviar tu consulta. Intentá nuevamente o escribinos por WhatsApp.");
     } finally {
@@ -144,6 +152,19 @@ export default function Contact() {
               <label htmlFor="message">{content.form.message}</label>
               <textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} aria-invalid={!!errors.message} />
               {errors.message && <span className="field-error">{errors.message}</span>}
+            </div>
+            <div className="form-captcha">
+              <HCaptcha
+                ref={captchaRef}
+                sitekey={hcaptchaSiteKey}
+                reCaptchaCompat={false}
+                onVerify={setCaptchaToken}
+                onExpire={() => setCaptchaToken("")}
+                onError={() => {
+                  setCaptchaToken("");
+                  setSubmitError("No pudimos cargar la validación antispam. Recargá la página o escribinos por WhatsApp.");
+                }}
+              />
             </div>
             <button className="button button--primary form-submit" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Enviando…" : content.form.submit}
