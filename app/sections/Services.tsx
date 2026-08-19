@@ -28,7 +28,7 @@ export default function Services() {
             );
           })}
         </div>
-        <div className="centered-cta"><ButtonLink href="#contacto">{content.cta}</ButtonLink></div>
+        <div className="centered-cta"><ButtonLink href="#contacto" analyticsEvent="contact_cta_clicked" analyticsProperties={{ location: "services" }}>{content.cta}</ButtonLink></div>
       </div>
     </section>
   );

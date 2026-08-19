@@ -2,6 +2,7 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { track } from "@vercel/analytics";
 import { Instagram, MessageCircle } from "lucide-react";
 import { SITE_CONTENT, SOCIAL_LINKS } from "../constants/content";
 import SectionHeading from "../components/ui/SectionHeading";
@@ -43,6 +44,7 @@ export default function Contact() {
 
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORM;
     if (!accessKey) {
+      track("contact_form_failed", { reason: "missing_configuration" });
       setSubmitError("El formulario no está configurado. Escribinos por WhatsApp.");
       return;
     }
@@ -82,12 +84,17 @@ export default function Contact() {
         throw new Error(result.message || "No se pudo enviar la consulta.");
       }
 
+      track("contact_form_submitted", {
+        event_type: form.eventType,
+        interest: form.interest,
+      });
       setSubmitted(true);
       setForm(initialForm);
       formElement.reset();
       setCaptchaToken("");
       if (isHCaptchaEnabled) captchaRef.current?.resetCaptcha();
     } catch {
+      track("contact_form_failed", { reason: "request_failed" });
       setSubmitError("No pudimos enviar tu consulta. Intentá nuevamente o escribinos por WhatsApp.");
     } finally {
       setIsSubmitting(false);
@@ -112,7 +119,7 @@ export default function Contact() {
             <p className="direct-contact-copy">{content.directContact.channelsNote}</p>
             <div className="direct-links">
               {SOCIAL_LINKS.whatsapp && (
-                <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="direct-channel direct-channel--whatsapp">
+                <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="direct-channel direct-channel--whatsapp" onClick={() => track("whatsapp_opened", { location: "contact_section" })}>
                   <MessageCircle />{content.directContact.whatsapp}<small>{content.directContact.whatsappPhone}</small>
                 </a>
               )}

@@ -18,8 +18,8 @@ export default function Hero() {
           <p className="hero-subtitle">{content.subtitle}</p>
           <p className="hero-description">{content.description}</p>
           <div className="button-row">
-            <ButtonLink href="#contacto">{content.primaryCta}</ButtonLink>
-            <ButtonLink href="#galeria" variant="secondary">{content.secondaryCta}</ButtonLink>
+            <ButtonLink href="#contacto" analyticsEvent="contact_cta_clicked" analyticsProperties={{ location: "hero" }}>{content.primaryCta}</ButtonLink>
+            <ButtonLink href="#galeria" variant="secondary" analyticsEvent="gallery_cta_clicked" analyticsProperties={{ location: "hero" }}>{content.secondaryCta}</ButtonLink>
           </div>
         </Reveal>
         <Reveal className="hero-collage" delay={120}>

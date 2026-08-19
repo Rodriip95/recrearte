@@ -12,7 +12,7 @@ export default function Closing() {
       />
       <Reveal>
         <p className="closing-text">{SITE_CONTENT.contact.closing}</p>
-        <ButtonLink href={SOCIAL_LINKS.whatsapp} variant="light">Escribime</ButtonLink>
+        <ButtonLink href={SOCIAL_LINKS.whatsapp} variant="light" analyticsEvent="whatsapp_opened" analyticsProperties={{ location: "closing" }}>Escribime</ButtonLink>
       </Reveal>
       <DecorativeAsset
         src="/assets/Vector-2.svg"

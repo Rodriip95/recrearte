@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import StructuredData from "./components/seo/StructuredData";
 import {
@@ -76,6 +78,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <StructuredData />
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

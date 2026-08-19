@@ -31,7 +31,7 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        <ButtonLink href="/#contacto" className="header-cta button--sm">Quiero crear mi evento</ButtonLink>
+        <ButtonLink href="/#contacto" className="header-cta button--sm" analyticsEvent="contact_cta_clicked" analyticsProperties={{ location: "desktop_header" }}>Quiero crear mi evento</ButtonLink>
         <button
           className="menu-button"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -50,7 +50,7 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-          <ButtonLink href="/#contacto">Quiero crear mi evento</ButtonLink>
+          <ButtonLink href="/#contacto" analyticsEvent="contact_cta_clicked" analyticsProperties={{ location: "mobile_menu" }}>Quiero crear mi evento</ButtonLink>
         </nav>
       </div>
     </header>

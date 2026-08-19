@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { track } from "@vercel/analytics";
 import { SITE_CONTENT } from "../constants/content";
 import type { GalleryCategory, GalleryItem } from "../types/content";
 import SectionHeading from "../components/ui/SectionHeading";
@@ -27,7 +28,7 @@ export default function GalleryClient({ galleryItems }: { galleryItems: GalleryI
               title={content.title}
               description={content.description}
             />
-            <Link className="button button--light gallery-preview-cta" href="/catalogo">
+            <Link className="button button--light gallery-preview-cta" href="/catalogo" onClick={() => track("catalog_opened", { category: "all", location: "gallery_header" })}>
               Ver catálogo completo
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
@@ -49,7 +50,7 @@ export default function GalleryClient({ galleryItems }: { galleryItems: GalleryI
                     </p>
                     <h3>{category}</h3>
                   </div>
-                  <Link href={`/catalogo#${getCategoryId(category)}`}>
+                  <Link href={`/catalogo#${getCategoryId(category)}`} onClick={() => track("catalog_opened", { category, location: "gallery_category" })}>
                     Ver más
                     <ArrowRight size={15} aria-hidden="true" />
                   </Link>
